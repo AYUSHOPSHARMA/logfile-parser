@@ -30,7 +30,7 @@ The program should:
 - Lombok
 - Junit
 - Jacoco
-- 
+
 ### Steps to follow 
 
 - Download the repository or clone the GIT repo
@@ -58,7 +58,22 @@ Once your run above command it will create a jacoco report under the path logfil
 <img width="955" alt="image" src="https://user-images.githubusercontent.com/27842538/169293090-b9af3941-6b97-46b7-8f3e-049e386c2817.png">
 
 
+## Other Solution
 
+- We can use Kafka for runtime distributed streaming
+#### Kafka Connect File Pulse
+-   We can use FilePlus Connector as source connector. Connect File Pulse is a multi-purpose Kafka Connect plugin for ingesting and transforming files that was release in open-source. 
 
-- 
+##### Key Features
+onnect File Pulse provides the capability to periodically scan an input local directory (recursively or not) for new files and read and transform data as strongly typed records. Records are sent into Apache Kafka as new files are added into the input directory or data are added to an existing file.
+
+Connect File Pulse supports multiple input formats via different built-in FileInputReader.
+- **RowFileInputReader**: allows reading a file line by line and creates one record per row. It can be used to read, for example, delimited text files (i.e. CSV, TSV) or application log files (e.g. log4j).
+- **BytesArrayInputReader**: can be used to create a single byte array record from a source file.
+- **AvroFileInputReader**: allows reading input Avro container files.
+- **XMLFileInputReader**: allows reading simple XML files. This reader will infer record schema from the XML DOM.
+
+We can use multiple filters allows us to configure complex filtering chains for parsing, transforming and enriching data through the use of Filters.
+
+![kafka-connector](https://user-images.githubusercontent.com/27842538/169300416-efb0ffa0-6790-4637-a097-c3b894b61c84.png)
 
