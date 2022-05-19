@@ -1,0 +1,5 @@
+com\example\logfile\parser\service\FileReaderServiceTest.class
+com\example\logfile\parser\service\LogFileParserServiceTest.class
+com\example\logfile\parser\deserializer\LogFileDeserializerTest.class
+com\example\logfile\parser\LogParserApplicationIntegrationTest.class
+com\example\logfile\parser\LogParserApplicationTest.class

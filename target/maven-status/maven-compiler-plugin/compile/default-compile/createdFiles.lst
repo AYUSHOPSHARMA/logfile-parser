@@ -1,0 +1,13 @@
+com\example\logfile\parser\service\LogFileParserService.class
+com\example\logfile\parser\entity\EventDetail.class
+com\example\logfile\parser\deserializer\LogFileDeserializer.class
+com\example\logfile\parser\bean\ServerLogData.class
+com\example\logfile\parser\LogFileParserApplication.class
+com\example\logfile\parser\LogParseConfiguration.class
+com\example\logfile\parser\service\JsonObjectMapper.class
+com\example\logfile\parser\repository\EventDetailRepository.class
+com\example\logfile\parser\bean\ApplicationServerEventData.class
+com\example\logfile\parser\bean\State.class
+com\example\logfile\parser\bean\EventData.class
+com\example\logfile\parser\service\FileReaderService.class
+com\example\logfile\parser\entity\EventDetail$EventDetailBuilder.class

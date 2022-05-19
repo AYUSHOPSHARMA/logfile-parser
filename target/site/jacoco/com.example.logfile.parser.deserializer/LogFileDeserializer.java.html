@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LogFileDeserializer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">logfile-parser</a> &gt; <a href="index.source.html" class="el_package">com.example.logfile.parser.deserializer</a> &gt; <span class="el_source">LogFileDeserializer.java</span></div><h1>LogFileDeserializer.java</h1><pre class="source lang-java linenums">package com.example.logfile.parser.deserializer;
+
+import java.io.IOException;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import com.example.logfile.parser.bean.ApplicationServerEventData;
+import com.example.logfile.parser.bean.EventData;
+import com.example.logfile.parser.bean.ServerLogData;
+import com.fasterxml.jackson.core.JacksonException;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.TreeNode;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
+
+public class LogFileDeserializer extends StdDeserializer&lt;EventData&gt; {
+
+<span class="fc" id="L19">	private static final Logger logger = LogManager.getLogger(LogFileDeserializer.class);</span>
+
+	private static final long serialVersionUID = 1L;
+
+	protected LogFileDeserializer() {
+<span class="fc" id="L24">		super(LogFileDeserializer.class);</span>
+<span class="fc" id="L25">	}</span>
+
+	@Override
+	public EventData deserialize(JsonParser parser, DeserializationContext ctxt) throws IOException, JacksonException {
+<span class="fc" id="L29">		TreeNode node = parser.readValueAsTree();</span>
+<span class="fc" id="L30">        TreeNode type = node.get(&quot;type&quot;);</span>
+<span class="fc bfc" id="L31" title="All 2 branches covered.">        if(type!=null) {</span>
+<span class="fc" id="L32">        	 return parser.getCodec().treeToValue(node, ApplicationServerEventData.class);</span>
+        }
+<span class="fc" id="L34">        return parser.getCodec().treeToValue(node,  ServerLogData.class);</span>
+
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -1,0 +1,13 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+logfile-parser,com.example.logfile.parser.deserializer,LogFileDeserializer,0,31,0,2,0,8,0,4,0,3
+logfile-parser,com.example.logfile.parser.entity,EventDetail,113,164,28,18,0,9,24,16,4,13
+logfile-parser,com.example.logfile.parser.entity,EventDetail.EventDetailBuilder,32,42,0,0,0,1,1,7,1,7
+logfile-parser,com.example.logfile.parser,LogFileParserApplication,7,24,0,0,3,6,2,3,2,3
+logfile-parser,com.example.logfile.parser,LogParseConfiguration,0,7,0,0,0,2,0,2,0,2
+logfile-parser,com.example.logfile.parser.bean,ServerLogData,0,3,0,0,0,1,0,1,0,1
+logfile-parser,com.example.logfile.parser.bean,State,0,15,0,0,0,3,0,1,0,1
+logfile-parser,com.example.logfile.parser.bean,ApplicationServerEventData,0,42,0,0,0,6,0,6,0,6
+logfile-parser,com.example.logfile.parser.bean,EventData,0,46,0,0,0,11,0,8,0,8
+logfile-parser,com.example.logfile.parser.service,JsonObjectMapper,3,0,0,0,1,0,1,0,1,0
+logfile-parser,com.example.logfile.parser.service,FileReaderService,6,118,1,7,3,35,1,7,0,4
+logfile-parser,com.example.logfile.parser.service,LogFileParserService,0,318,2,16,0,55,2,17,0,10

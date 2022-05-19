@@ -1,0 +1,12 @@
+C:\Dev\Test\logfile-parser\src\main\java\com\example\logfile\parser\LogFileParserApplication.java
+C:\Dev\Test\logfile-parser\src\main\java\com\example\logfile\parser\bean\ServerLogData.java
+C:\Dev\Test\logfile-parser\src\main\java\com\example\logfile\parser\bean\ApplicationServerEventData.java
+C:\Dev\Test\logfile-parser\src\main\java\com\example\logfile\parser\bean\EventData.java
+C:\Dev\Test\logfile-parser\src\main\java\com\example\logfile\parser\repository\EventDetailRepository.java
+C:\Dev\Test\logfile-parser\src\main\java\com\example\logfile\parser\service\JsonObjectMapper.java
+C:\Dev\Test\logfile-parser\src\main\java\com\example\logfile\parser\entity\EventDetail.java
+C:\Dev\Test\logfile-parser\src\main\java\com\example\logfile\parser\bean\State.java
+C:\Dev\Test\logfile-parser\src\main\java\com\example\logfile\parser\deserializer\LogFileDeserializer.java
+C:\Dev\Test\logfile-parser\src\main\java\com\example\logfile\parser\service\FileReaderService.java
+C:\Dev\Test\logfile-parser\src\main\java\com\example\logfile\parser\LogParseConfiguration.java
+C:\Dev\Test\logfile-parser\src\main\java\com\example\logfile\parser\service\LogFileParserService.java

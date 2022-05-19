@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LogFileParserService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">logfile-parser</a> &gt; <a href="index.source.html" class="el_package">com.example.logfile.parser.service</a> &gt; <span class="el_source">LogFileParserService.java</span></div><h1>LogFileParserService.java</h1><pre class="source lang-java linenums">/**
+ * 
+ */
+package com.example.logfile.parser.service;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import com.example.logfile.parser.bean.ApplicationServerEventData;
+import com.example.logfile.parser.bean.EventData;
+import com.example.logfile.parser.bean.State;
+import com.example.logfile.parser.entity.EventDetail;
+import com.example.logfile.parser.repository.EventDetailRepository;
+
+
+/**
+ * @author ayush.sharma
+ *
+ */
+
+@Service
+public class LogFileParserService {
+
+<span class="fc" id="L36">	private static final Logger logger = LogManager.getLogger(LogFileParserService.class);</span>
+
+<span class="fc" id="L38">	@Value(&quot;${app.alert.threshold.milliseconds}&quot;)</span>
+<span class="fc" id="L39">	private Long alertThreshold= 4L;</span>
+
+	private FileReaderService fileReaderService;
+
+	@Autowired
+	private EventDetailRepository eventDetailRepository;
+
+	public LogFileParserService(@Value(&quot;${logfile.path}&quot;) String logFilePath, FileReaderService fileReaderService) {
+<span class="fc" id="L47">		super();</span>
+<span class="fc" id="L48">		this.logFilePath = logFilePath;</span>
+<span class="fc" id="L49">		this.fileReaderService = Objects.requireNonNull(fileReaderService, &quot;object cannot be null&quot;);</span>
+<span class="fc" id="L50">	}</span>
+	
+	@Value(&quot;${logfile.path}&quot;)
+	private String logFilePath;
+
+
+	 public List&lt;EventDetail&gt; parseLogFileForEventDetails(String... args) throws IOException {
+<span class="pc bpc" id="L57" title="2 of 6 branches missed.">		 if (args != null &amp;&amp; args.length &gt; 0 &amp;&amp; !args[0].trim().isEmpty()) {</span>
+<span class="fc" id="L58">				logFilePath = args[0];</span>
+			}
+<span class="fc" id="L60">		 File file = new File(logFilePath);</span>
+<span class="fc bfc" id="L61" title="All 2 branches covered.">			if(!file.exists()) {</span>
+<span class="fc" id="L62">				logger.error(&quot;File Exist ? &quot;+file.exists()+&quot; On Path &quot;+logFilePath);</span>
+<span class="fc" id="L63">				throw new IOException(String.format(&quot;Exception when trying to read from file at path %s&quot;, file.getAbsolutePath()));</span>
+			}
+<span class="fc" id="L65">		 logger.info(&quot;File Exist ? &quot;+file.exists()+&quot; On Path &quot;+logFilePath);</span>
+<span class="fc" id="L66">		 return parseLogFileEvents();</span>
+	 }
+	public List&lt;EventDetail&gt; parseLogFileEvents() throws IOException {
+<span class="fc" id="L69">		return copyUsingChunks();</span>
+	}
+
+	private List&lt;EventDetail&gt; copyUsingChunks() throws IOException {
+<span class="fc" id="L73">		List&lt;EventDetail&gt; eventDetails = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L74">		List&lt;EventData&gt; eventList = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L75">		logger.info(&quot;logFilePath&quot; + logFilePath);</span>
+<span class="fc" id="L76">		eventList = fileReaderService.getEventObjectsFromFile(logFilePath);</span>
+<span class="fc" id="L77">		logger.info(&quot;Event data objects being persisted {}&quot;, Arrays.toString(eventList.toArray()));</span>
+<span class="fc" id="L78">		eventDetails = buildEventDetailsFromLogEntries(eventList);</span>
+<span class="fc" id="L79">		return eventDetails;</span>
+	}
+
+
+	private List&lt;EventDetail&gt; buildEventDetailsFromLogEntries(List&lt;EventData&gt; eventDatas) {
+<span class="fc" id="L84">		Map&lt;String, EventDetail&gt; eventDetailsMap = new HashMap&lt;&gt;();</span>
+<span class="fc bfc" id="L85" title="All 2 branches covered.">		for (EventData entry : eventDatas) {</span>
+<span class="fc" id="L86">			processLogEntryForEventDetail(eventDetailsMap, entry);</span>
+<span class="fc" id="L87">		}</span>
+<span class="fc" id="L88">		return new ArrayList&lt;&gt;(eventDetailsMap.values());</span>
+	}
+
+	private void processLogEntryForEventDetail(Map&lt;String, EventDetail&gt; eventDetailsMap, EventData entry) {
+<span class="fc bfc" id="L92" title="All 2 branches covered.">        if (eventDetailsMap.containsKey(entry.getId())) {</span>
+            EventDetail eventDetail;
+<span class="fc" id="L94">            logger.info(&quot;Checking for state --&quot;+entry.getState());</span>
+<span class="fc bfc" id="L95" title="All 2 branches covered.">            if (entry.getState().equals(State.FINISHED)) {</span>
+<span class="fc" id="L96">                eventDetail = updateEventDetailWithFinishedEvent(eventDetailsMap, entry);</span>
+            } else {
+<span class="fc" id="L98">                eventDetail = updateEventDetailWithStartEvent(eventDetailsMap, entry);</span>
+            }
+<span class="fc bfc" id="L100" title="All 2 branches covered.">            if (eventDetail.getEventDuration() &gt; alertThreshold) {</span>
+<span class="fc" id="L101">                eventDetail.setAlert(true);</span>
+<span class="fc" id="L102">                logger.warn(&quot;Alert threshold of {}ms exceeded for event detail with id {}&quot;, alertThreshold, eventDetail.getId());</span>
+            }
+<span class="fc" id="L104">        } else {</span>
+<span class="fc" id="L105">            EventDetail eventDetail = prepareEventDetailForEntry(entry);</span>
+<span class="fc" id="L106">            eventDetailsMap.put(entry.getId(), eventDetail);</span>
+        }
+<span class="fc" id="L108">    }</span>
+
+	private EventDetail prepareEventDetailForEntry(EventData entry) {
+<span class="fc" id="L111">		EventDetail.EventDetailBuilder eventDetailBuilder = EventDetail.builder().id(entry.getId())</span>
+<span class="fc" id="L112">				.eventDuration(entry.getTimestamp()).alert(false);</span>
+<span class="fc bfc" id="L113" title="All 2 branches covered.">		if (entry instanceof ApplicationServerEventData) {</span>
+<span class="fc" id="L114">			ApplicationServerEventData applicationServerEventData = (ApplicationServerEventData) entry;</span>
+<span class="fc" id="L115">			eventDetailBuilder.host(applicationServerEventData.getHost());</span>
+<span class="fc" id="L116">			eventDetailBuilder.type(applicationServerEventData.getType());</span>
+		}
+<span class="fc" id="L118">		return eventDetailBuilder.build();</span>
+	}
+
+    private EventDetail updateEventDetailWithStartEvent(Map&lt;String, EventDetail&gt; eventDetailsMap, EventData entry) {
+        EventDetail eventDetail;
+<span class="fc" id="L123">        eventDetail = eventDetailsMap.get(entry.getId());</span>
+<span class="fc" id="L124">        logger.info(&quot;IN START eventDetail.getEventDuration() &quot;+eventDetail.getEventDuration()+ &quot; entry.getTimestamp() &quot;+entry.getTimestamp());</span>
+<span class="fc" id="L125">        eventDetail.setEventDuration(eventDetail.getEventDuration() - entry.getTimestamp());</span>
+<span class="fc" id="L126">        return eventDetail;</span>
+    }
+
+    private EventDetail updateEventDetailWithFinishedEvent(Map&lt;String, EventDetail&gt; eventDetailsMap, EventData entry) {
+        EventDetail eventDetail;
+<span class="fc" id="L131">        eventDetail = eventDetailsMap.get(entry.getId());</span>
+<span class="fc" id="L132">        logger.info(&quot;IN FINISH eventDetail.getEventDuration() &quot;+eventDetail.getEventDuration()+ &quot; entry.getTimestamp() &quot;+entry.getTimestamp());</span>
+<span class="fc" id="L133">        eventDetail.setEventDuration(entry.getTimestamp() - eventDetail.getEventDuration());</span>
+<span class="fc" id="L134">        return eventDetail;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
