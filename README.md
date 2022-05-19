@@ -22,6 +22,15 @@ The program should:
   - Alert (true if the event took longer than 4ms, otherwise false)
 
 ## Solution
+### Technology Stack
+- Java 8 or above
+- Spring boot
+- Maven
+- Log4J
+- Lombok
+- Junit
+- Jacoco
+- 
 ### Steps to follow 
 
 - Download the repository or clone the GIT repo
