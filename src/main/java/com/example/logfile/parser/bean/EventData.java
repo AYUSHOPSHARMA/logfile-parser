@@ -6,9 +6,21 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import lombok.ToString;
 
+/**
+ * @author ayush.sharma
+ *
+ * Event data logs bean which have the following attributes:
+ * id - the unique event identifier
+ * state - whether the event was started or finished (can have values "STARTED" or "FINISHED"
+ * timestamp - the timestamp of the event in milliseconds
+ */
 @JsonDeserialize(using = LogFileDeserializer.class)
 @ToString
 public abstract class EventData {
+	
+	/**
+	 * @JsonProperty(name), tells Jackson ObjectMapper to map the JSON property name to the annotated Java field's name
+	 */
 	
 	@JsonProperty("id")
     private String id;

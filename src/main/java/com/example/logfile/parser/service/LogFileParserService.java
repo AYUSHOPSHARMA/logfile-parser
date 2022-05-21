@@ -28,8 +28,13 @@ import com.example.logfile.parser.repository.EventDetailRepository;
 /**
  * @author ayush.sharma
  *
- */
-
+ *  @Service to indicate that they're holding the business logic. 
+ *  
+ *  LogFileParserService class contains the logic to call the multiple file operation define inside the FileReader service to read the data from file and deserialize it.
+ *  
+ *  It also contains logic to save data into data base.
+ *  
+ *  */
 @Service
 public class LogFileParserService {
 
@@ -51,7 +56,14 @@ public class LogFileParserService {
 	
 	@Value("${logfile.path}")
 	private String logFilePath;
-
+/**
+ * 
+ * @param args - path of file
+ * @return
+ * @throws IOException
+ * 
+ * parseLogFileForEventDetails is used to read the tile path and check it file exist, if exist- call the parseLogFileEvents for further processing. 
+ */
 
 	 public List<EventDetail> parseLogFileForEventDetails(String... args) throws IOException {
 		 if (args != null && args.length > 0 && !args[0].trim().isEmpty()) {
@@ -65,10 +77,21 @@ public class LogFileParserService {
 		 logger.info("File Exist ? "+file.exists()+" On Path "+logFilePath);
 		 return parseLogFileEvents();
 	 }
+	 /**
+	  * 
+	  * @return  List<EventDetail>
+	  * @throws IOException
+	  */
 	public List<EventDetail> parseLogFileEvents() throws IOException {
 		return copyUsingChunks();
 	}
-
+/**
+ * 
+ * @return List<EventDetail>
+ * @throws IOException
+ * 
+ * call the filereader service for parsing and deserializing the data.
+ */
 	private List<EventDetail> copyUsingChunks() throws IOException {
 		List<EventDetail> eventDetails = new ArrayList<>();
 		List<EventData> eventList = new ArrayList<>();
@@ -79,7 +102,13 @@ public class LogFileParserService {
 		return eventDetails;
 	}
 
-
+/**
+ * 
+ * @param eventDatas
+ * @return List<EventDetail>
+ * 
+ * take the evendata list and convert into persistent object 
+ */
 	private List<EventDetail> buildEventDetailsFromLogEntries(List<EventData> eventDatas) {
 		Map<String, EventDetail> eventDetailsMap = new HashMap<>();
 		for (EventData entry : eventDatas) {
@@ -87,7 +116,13 @@ public class LogFileParserService {
 		}
 		return new ArrayList<>(eventDetailsMap.values());
 	}
-
+/**
+ * 
+ * @param eventDetailsMap
+ * @param entry
+ * 
+ * Logic to check if event id already present check state based on start and finish and logic to calculate the event duration and comparision with alertThreshold
+ */
 	private void processLogEntryForEventDetail(Map<String, EventDetail> eventDetailsMap, EventData entry) {
         if (eventDetailsMap.containsKey(entry.getId())) {
             EventDetail eventDetail;
@@ -105,6 +140,12 @@ public class LogFileParserService {
             eventDetailsMap.put(entry.getId(), eventDetail);
         }
     }
+	
+	/**
+	 * Converting EventData bean into EventDetail persistent object
+	 * @param entry
+	 * @return
+	 */
 
 	private EventDetail prepareEventDetailForEntry(EventData entry) {
 		EventDetail.EventDetailBuilder eventDetailBuilder = EventDetail.builder().id(entry.getId())
@@ -116,7 +157,12 @@ public class LogFileParserService {
 		}
 		return eventDetailBuilder.build();
 	}
-
+/**
+ * update duration for start state
+ * @param eventDetailsMap
+ * @param entry
+ * @return
+ */
     private EventDetail updateEventDetailWithStartEvent(Map<String, EventDetail> eventDetailsMap, EventData entry) {
         EventDetail eventDetail;
         eventDetail = eventDetailsMap.get(entry.getId());
@@ -124,7 +170,12 @@ public class LogFileParserService {
         eventDetail.setEventDuration(eventDetail.getEventDuration() - entry.getTimestamp());
         return eventDetail;
     }
-
+    /**
+     * update duration for end state
+     * @param eventDetailsMap
+     * @param entry
+     * @return
+     */
     private EventDetail updateEventDetailWithFinishedEvent(Map<String, EventDetail> eventDetailsMap, EventData entry) {
         EventDetail eventDetail;
         eventDetail = eventDetailsMap.get(entry.getId());

@@ -20,6 +20,14 @@ import com.example.logfile.parser.bean.EventData;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+/**
+ * @author ayush.sharma
+ *
+ *  @Service to indicate that they're holding the business logic. 
+ *  
+ *  FileReaderService class contains the logic to read the file line by line and parse the json object and deserialize it in java object.
+ *  
+ *  */
 
 @Service
 public class FileReaderService {

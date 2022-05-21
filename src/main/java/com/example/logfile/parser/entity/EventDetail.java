@@ -9,7 +9,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-
+/**
+ * @author ayush.sharma
+ *
+ *  An entity is a lightweight persistence domain object. Typically, 
+ *  an entity represents a table in a relational database, and each entity instance corresponds to a row in that table.
+ *  
+ *  Here EventDetail is representing a table event_details and all fields of this class represent the column of table
+ */
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
